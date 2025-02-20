@@ -1,0 +1,93 @@
+
+schema-validation:
+  classes:
+    - className: com.example.validation.application.validation_application.model.User
+      class-constraints:
+        - type: com.example.validation.application.validation_application.validation.ValidCompanyEmail
+      fields:
+        - field-path: name
+          constraints:
+            - type: org.hibernate.validator.constraints.NotBlank
+            - type: jakarta.validation.constraints.Size
+              attributes:
+                min: 3
+                max: 50
+        - field-path: email
+          constraints:
+            - type: jakarta.validation.constraints.Email
+        - field-path: password
+          constraints:
+            - type: jakarta.validation.constraints.Pattern
+              attributes:
+                regexp: "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
+        - field-path: age
+          constraints:
+            - type: jakarta.validation.constraints.Min
+              attributes:
+                value: 18
+        - field-path: address
+          constraints:
+            - type: jakarta.validation.constraints.NotNull
+
+
+    - className: com.example.validation.application.validation_application.model.Address
+      fields:
+        - field-path: street
+          constraints:
+            - type: jakarta.validation.constraints.NotBlank
+            - type: jakarta.validation.constraints.Size
+              attributes:
+                max: 100
+        - field-path: zipCode
+          constraints:
+            - type: jakarta.validation.constraints.Pattern
+              attributes:
+                regexp: "^\\d{5}(-\\d{4})?$"
+        - field-path: countryCode
+          constraints:
+            - type: com.example.validation.application.validation_application.validation.ValidCountryCode
+
+    - className: com.example.validation.application.validation_application.model.CreditCard
+      fields:
+        - field-path: number
+          constraints:
+            - type: org.hibernate.validator.constraints.CreditCardNumber
+        - field-path: expiryDate
+          constraints:
+            - type: jakarta.validation.constraints.Future
+        - field-path: cvv
+          constraints:
+            - type: jakarta.validation.constraints.Min
+              attributes:
+                value: 100
+            - type: jakarta.validation.constraints.Max
+              attributes:
+                value: 999
+
+    - className: com.example.validation.application.validation_application.model.BankAccount
+      fields:
+        - field-path: routingNumber
+          constraints:
+            - type: jakarta.validation.constraints.Pattern
+              attributes:
+                regexp: "^\\d{9}$"
+        - field-path: accountNumber
+          constraints:
+            - type: jakarta.validation.constraints.Size
+              attributes:
+                min: 10
+                max: 17
+
+    - className: com.example.validation.application.validation_application.model.ProductReview
+      fields:
+        - field-path: rating
+          constraints:
+            - type: jakarta.validation.constraints.Min
+              attributes:
+                value: 1
+            - type: jakarta.validation.constraints.Max
+              attributes:
+                value: 5
+        - field-path: reviewDate
+          constraints:
+            - type: jakarta.validation.constraints.PastOrPresent
